@@ -1,0 +1,466 @@
+/* Design tokens — reference dataviz palette, light + dark. */
+:root {
+  --page: #f9f9f7;
+  --surface-1: #fcfcfb;
+  --ink-1: #0b0b0b;
+  --ink-2: #52514e;
+  --ink-muted: #898781;
+  --grid: #e1e0d9;
+  --baseline: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.1);
+
+  --series-1: #2a78d6; /* blue */
+  --series-2: #1baf7a; /* aqua */
+  --series-3: #eda100; /* yellow */
+  --series-4: #008300; /* green */
+  --series-5: #4a3aa7; /* violet */
+  --series-6: #e34948; /* red */
+
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+
+  --accent: #2a78d6;
+  --accent-wash: rgba(42, 120, 214, 0.1);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #0d0d0d;
+    --surface-1: #1a1a19;
+    --ink-1: #ffffff;
+    --ink-2: #c3c2b7;
+    --ink-muted: #898781;
+    --grid: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255, 255, 255, 0.1);
+
+    --series-1: #3987e5;
+    --series-2: #199e70;
+    --series-3: #c98500;
+    --series-4: #008300;
+    --series-5: #9085e9;
+    --series-6: #e66767;
+
+    --accent: #3987e5;
+    --accent-wash: rgba(57, 135, 229, 0.16);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink-1);
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 20px 96px;
+}
+
+header.site-header {
+  padding: 56px 0 8px;
+}
+
+.site-header h1 {
+  font-size: 2.1rem;
+  line-height: 1.2;
+  margin: 0 0 12px;
+  letter-spacing: -0.02em;
+}
+
+.site-header .subtitle {
+  color: var(--ink-2);
+  max-width: 46em;
+  margin: 0;
+}
+
+nav.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0 8px;
+}
+
+nav.toc a {
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  background: var(--surface-1);
+}
+
+nav.toc a:hover {
+  color: var(--ink-1);
+  border-color: var(--accent);
+}
+
+section.lesson {
+  margin-top: 56px;
+  scroll-margin-top: 24px;
+}
+
+section.lesson > h2 {
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+
+section.lesson > h2 .kicker {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+section.lesson h3 {
+  font-size: 1.1rem;
+  margin: 28px 0 8px;
+}
+
+section.lesson p,
+section.lesson li {
+  color: var(--ink-2);
+  max-width: 52em;
+}
+
+section.lesson p strong,
+section.lesson li strong {
+  color: var(--ink-1);
+}
+
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.callout {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-wash);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 20px 0;
+}
+
+.callout.warn {
+  border-left-color: var(--status-serious);
+  background: color-mix(in srgb, var(--status-serious) 9%, transparent);
+}
+
+.callout p {
+  margin: 0.4em 0;
+}
+
+/* ---------- Controls ---------- */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 150px;
+}
+
+.field > label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.field .value-readout {
+  font-size: 0.85rem;
+  color: var(--ink-1);
+  font-weight: 600;
+}
+
+input[type='range'] {
+  accent-color: var(--accent);
+  width: 100%;
+  margin: 0;
+}
+
+select,
+input[type='number'] {
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink-1);
+  background: var(--surface-1);
+  border: 1px solid var(--baseline);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+button.preset {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-1);
+  background: var(--surface-1);
+  border: 1px solid var(--baseline);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+button.preset:hover {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+button.preset.active {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+/* ---------- Stat tiles ---------- */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.stat-tile {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.stat-tile .label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.stat-tile .value {
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink-1);
+}
+
+.stat-tile .note {
+  font-size: 0.75rem;
+  color: var(--ink-2);
+}
+
+.stat-tile.bad .value {
+  color: var(--status-critical);
+}
+
+.stat-tile.warn .value {
+  color: var(--status-serious);
+}
+
+.stat-tile.good .value {
+  color: var(--status-good);
+}
+
+/* ---------- Charts ---------- */
+.chart {
+  position: relative;
+  margin: 12px 0;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chart-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-1);
+  margin: 4px 0 0;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 0.78rem;
+  color: var(--ink-2);
+  margin: 6px 0 2px;
+}
+
+.chart-legend .key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-legend .swatch-line {
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+  display: inline-block;
+}
+
+.chart-legend .swatch-band {
+  width: 12px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.chart-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  min-width: 130px;
+  z-index: 10;
+}
+
+.chart-tooltip .when {
+  color: var(--ink-muted);
+  margin-bottom: 4px;
+}
+
+.chart-tooltip .row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: space-between;
+}
+
+.chart-tooltip .row .name {
+  color: var(--ink-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-tooltip .row .val {
+  font-weight: 600;
+  color: var(--ink-1);
+}
+
+/* ---------- Alert timeline ---------- */
+.alert-timeline {
+  margin: 12px 0;
+}
+
+.alert-timeline .row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.alert-timeline .row .name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  text-align: right;
+}
+
+/* ---------- Formula ---------- */
+.formula-block {
+  overflow-x: auto;
+  padding: 10px 4px;
+  margin: 12px 0;
+}
+
+/* ---------- Rule editor table ---------- */
+table.rules {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+table.rules th {
+  text-align: left;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  font-weight: 600;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--grid);
+}
+
+table.rules td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--grid);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+table.rules select,
+table.rules input[type='number'] {
+  padding: 3px 6px;
+  font-size: 0.82rem;
+  width: 90px;
+}
+
+.severity-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 1px 10px;
+}
+
+.severity-chip.page {
+  color: var(--status-critical);
+  background: color-mix(in srgb, var(--status-critical) 12%, transparent);
+}
+
+.severity-chip.ticket {
+  color: var(--ink-2);
+  background: color-mix(in srgb, var(--ink-muted) 16%, transparent);
+}
+
+footer.site-footer {
+  margin-top: 80px;
+  padding-top: 20px;
+  border-top: 1px solid var(--grid);
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+}
+
+footer.site-footer a,
+section.lesson a {
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .alert-timeline .row {
+    grid-template-columns: 90px 1fr;
+  }
+}
