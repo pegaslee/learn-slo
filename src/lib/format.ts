@@ -1,7 +1,7 @@
 /** "95m" → "1h 35m"; "3000m" → "2d 2h". Chooses the two largest units. */
 export function formatMinutes(min: number | null | undefined): string {
   if (min === null || min === undefined || !isFinite(min)) return '—'
-  if (min < 1) return `${Math.round(min * 60)}s`
+  if (min < 1) return '<1m'
   const d = Math.floor(min / 1440)
   const h = Math.floor((min % 1440) / 60)
   const m = Math.round(min % 60)
@@ -21,7 +21,9 @@ export function formatSimTime(min: number): string {
 }
 
 export function formatPercent(frac: number, digits = 2): string {
-  return `${(frac * 100).toFixed(digits).replace(/\.?0+$/, '')}%`
+  // Trim trailing zeros only after a decimal point ("2.50" → "2.5", not "10" → "1").
+  const s = (frac * 100).toFixed(digits).replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '')
+  return `${s}%`
 }
 
 export function formatCompact(n: number): string {

@@ -106,38 +106,41 @@ export function TimeSeriesChart({
   const paths = useMemo(
     () =>
       series.map((s) => {
-        let d = ''
-        let area = ''
-        let open = false
-        let runStart = 0
+        // Contiguous runs of drawable points; nulls (and non-positives on a
+        // log scale) break the line into separate subpaths.
+        const runs: { pts: string[]; startT: number; endT: number }[] = []
+        let cur: { pts: string[]; startT: number; endT: number } | null = null
         for (let t0 = 0; t0 < n; t0 += step) {
           let v: number | null = null
           for (let t = t0; t < Math.min(n, t0 + step); t++) {
             const raw = s.data[t]
             if (raw !== null && (v === null || raw > v)) v = raw
           }
-          const usable = v !== null && (yScale !== 'log' || v > 0)
-          if (usable) {
-            const cmd = open ? 'L' : 'M'
-            if (!open) runStart = t0
-            d += `${cmd}${xToPx(t0).toFixed(1)},${yToPx(v!).toFixed(1)}`
-            open = true
-          } else if (open) {
-            if (s.area) area += closeArea(d, runStart, t0 - step)
-            open = false
-            d += ' '
+          if (v !== null && (yScale !== 'log' || v > 0)) {
+            if (!cur) {
+              cur = { pts: [], startT: t0, endT: t0 }
+              runs.push(cur)
+            }
+            cur.pts.push(`${xToPx(t0).toFixed(1)},${yToPx(v).toFixed(1)}`)
+            cur.endT = t0
+          } else {
+            cur = null
           }
         }
-        if (open && s.area) area += closeArea(d, runStart, n - 1)
-        return { ...s, d, areaD: area }
+        const d = runs.map((r) => `M${r.pts.join(' L')}`).join(' ')
+        const y0 = (MARGIN.top + ih).toFixed(1)
+        const areaD = s.area
+          ? runs
+              .map(
+                (r) =>
+                  `M${r.pts.join(' L')} L${xToPx(r.endT).toFixed(1)},${y0} L${xToPx(r.startT).toFixed(1)},${y0} Z`,
+              )
+              .join(' ')
+          : ''
+        return { ...s, d, areaD }
       }),
     [series, n, step, xToPx, yToPx, yScale],
   )
-
-  function closeArea(_d: string, start: number, end: number): string {
-    const y0 = MARGIN.top + ih
-    return ` L${xToPx(end).toFixed(1)},${y0} L${xToPx(start).toFixed(1)},${y0} Z`
-  }
 
   // Day ticks on the x-axis (fall back to hours for short horizons).
   const xTicks = useMemo(() => {
@@ -278,9 +281,7 @@ export function TimeSeriesChart({
         {/* series */}
         {paths.map((s) => (
           <g key={s.id}>
-            {s.area && s.areaD && (
-              <path d={s.areaD.replace(/ L/, ' L')} fill={s.color} opacity={0.1} stroke="none" />
-            )}
+            {s.area && s.areaD && <path d={s.areaD} fill={s.color} opacity={0.1} stroke="none" />}
             <path
               d={s.d}
               fill="none"

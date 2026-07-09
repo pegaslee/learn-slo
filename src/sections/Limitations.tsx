@@ -61,7 +61,7 @@ function LowObjectiveDemo() {
         title="1-hour burn rate during a TOTAL outage (log scale)"
         series={[{ id: 'br', label: '1h burn rate', color: 'var(--series-1)', data: sim.burnRates.get(60)! }]}
         thresholds={[
-          { value: 14.4, label: '14.4× page' },
+          { value: 14.4, label: '14.4×' },
           { value: mbr, label: `max ${formatCompact(mbr)}×`, color: 'var(--ink-muted)' },
         ]}
         bands={bands}
@@ -83,7 +83,7 @@ function LowObjectiveDemo() {
         />
         <StatCard
           label="14.4× needs objective ≥"
-          value={formatObjective(minObjective)}
+          value={`${(minObjective * 100).toFixed(1)}%`}
           note="1 − 1/14.4 — below this, delete or retune the rule"
         />
       </div>
@@ -142,7 +142,7 @@ function LowTrafficDemo() {
           { id: 'long', label: '1h burn rate', color: 'var(--series-1)', data: sim.burnRates.get(60)! },
           { id: 'short', label: '5m burn rate', color: 'var(--series-3)', data: sim.burnRates.get(5)! },
         ]}
-        thresholds={[{ value: 14.4, label: '14.4× page' }]}
+        thresholds={[{ value: 14.4, label: '14.4×' }]}
         bands={bands}
         yScale="log"
         height={210}
