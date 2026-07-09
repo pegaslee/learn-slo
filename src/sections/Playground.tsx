@@ -159,7 +159,9 @@ export function Playground() {
       <p>
         Everything unlocked: pick a traffic shape and volume, break the service however you like,
         and tune the alert policy. Presets highlight where MWMBR alerting shines — and where it
-        quietly fails you.
+        quietly fails you. When a policy feels right, take it to the{' '}
+        <a href="#/report-card">Report Card</a> to see how it scores against 60 days of randomized
+        incidents.
       </p>
 
       <div className="card">

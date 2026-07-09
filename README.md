@@ -8,8 +8,9 @@ based on [Chapter 5 of the Google SRE Workbook](https://sre.google/workbook/aler
 
 ## What it teaches
 
-A guided, scrolling tutorial where every chart is a live simulation you can drive with
-sliders, followed by a free-form playground:
+Five hash-routed pages; every chart is a live, seeded simulation you can drive with sliders.
+
+**Learn** — the guided MWMBR tutorial:
 
 1. **SLOs & error budgets** — objectives, and the budget as downtime/failed requests
 2. **Why naive alerting fails** — precision/recall/detection/reset trade-offs of "error rate > X%"
@@ -17,15 +18,27 @@ sliders, followed by a free-form playground:
 4. **Single-window burn-rate alerts** — the detection-time vs precision vs reset-time triangle
 5. **Multiwindow** — adding a short window so alerts clear quickly after recovery
 6. **Multi-burn-rate** — the workbook's 14.4×/6×/1× page/ticket tiers (Table 5-6)
-7. **Limitations** —
-   - a 14.4× rule **can never fire** below a ~93.1% objective (max burn rate = 1/(1−objective)),
-     even during a total outage
-   - low-traffic services turn burn rates into sampling noise (false pages from single failures)
-   - slow burns are detected slowly by design
-8. **Playground** — pick TPS, traffic shape (steady/diurnal/business-hours/spiky/growing),
-   incident scenario (outage/partial/slow burn/blips/bad deploy), objective, SLO window,
-   and fully editable alert rules; see burn rates, firing timelines, detection/reset times,
-   and budget consumed per rule. Presets showcase great and poor use cases.
+7. **Limitations** — a 14.4× rule **can never fire** below a ~93.1% objective, even during a
+   total outage; low traffic turns burn rates into sampling noise; slow burns detect slowly by design
+
+**SLIs & Queries** — the ratio underneath the alerts: good/valid event discipline and its
+gotchas (health checks, 4xx, retries, bots); "same outage, three monitors" (server-side metrics
+never page during a total crash — LB logs and probes do); latency SLIs as slow-requests-counted-bad
+instead of p99 alerts; and the actual PromQL recording/alert rules plus real-world detection-time
+taxes (scrape intervals, `for:`, notification pipeline).
+
+**Cookbook** — recommended policies per workload, each with a live demo: high-volume APIs
+(defaults work), multi-region (the dilution trap: a dead region at 5% traffic share may never
+page a global SLO), batch/freshness SLOs (time-based, lumpy, binary burn), low-traffic services
+(synthetic probes demonstrably eliminating false pages), and hard third-party dependencies
+(feasibility formula; chronic tickets when a dependency eats the budget).
+
+**Playground** — free-form simulator: TPS, traffic shape, incident scenario, objective, SLO
+window, fully editable alert rules; burn-rate charts, firing timelines, detection/reset stats.
+
+**Report Card** — scores your rule set against 60 simulated days of randomized incidents and
+quiet time: page precision, recall, median detection, false pages/month, slow-burn coverage,
+plus verdicts like "this rule is dead code at this objective."
 
 ## How it works
 

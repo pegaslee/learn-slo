@@ -164,7 +164,8 @@ function LowTrafficDemo() {
         Workbook mitigations: <strong>generate synthetic traffic</strong> so windows are never
         empty, <strong>aggregate</strong> several small services into one SLO,{' '}
         <strong>lengthen windows</strong> (accepting slower detection), or accept{' '}
-        <strong>lower-severity notifications</strong> instead of pages.
+        <strong>lower-severity notifications</strong> instead of pages. See the fixes actually
+        working in <a href="#/cookbook">Cookbook · Recipe 4</a>.
       </p>
     </div>
   )
@@ -259,6 +260,16 @@ export function Limitations() {
 
       <h3>7c · Slow burns are detected slowly — by design</h3>
       <SlowBurnLatency />
+
+      <div className="callout">
+        <p>
+          <strong>Where to next:</strong> the math above assumed a trustworthy error ratio —{' '}
+          <a href="#/sli">SLIs &amp; Queries</a> covers choosing it and writing the PromQL. The{' '}
+          <a href="#/cookbook">Cookbook</a> adapts these rules to multi-region, batch, low-traffic,
+          and dependency-bound workloads. And the <a href="#/report-card">Report Card</a> scores
+          any policy you design.
+        </p>
+      </div>
 
       <h3>Other caveats worth knowing</h3>
       <ul>
