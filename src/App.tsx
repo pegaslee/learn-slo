@@ -1,24 +1,21 @@
-import { BurnRates } from './sections/BurnRates'
-import { Intro } from './sections/Intro'
-import { Limitations } from './sections/Limitations'
-import { MultiBurnRate } from './sections/MultiBurnRate'
-import { MultiWindow } from './sections/MultiWindow'
-import { NaiveAlerting } from './sections/NaiveAlerting'
+import { useHashRoute, type Route } from './lib/router'
+import { CookbookPage } from './pages/CookbookPage'
+import { LearnPage } from './pages/LearnPage'
+import { ReportCardPage } from './pages/ReportCardPage'
+import { SliPage } from './pages/SliPage'
 import { Playground } from './sections/Playground'
-import { SingleWindow } from './sections/SingleWindow'
 
-const TOC = [
-  { id: 'intro', label: '1 · SLOs & error budgets' },
-  { id: 'naive', label: '2 · Why naive alerting fails' },
-  { id: 'burn-rates', label: '3 · Burn rates' },
-  { id: 'single-window', label: '4 · Burn-rate alerts' },
-  { id: 'multi-window', label: '5 · Multiwindow' },
-  { id: 'multi-burn-rate', label: '6 · Multi-burn-rate' },
-  { id: 'limitations', label: '7 · Limitations' },
-  { id: 'playground', label: '8 · Playground' },
+const TABS: { id: Route; label: string; blurb: string }[] = [
+  { id: 'learn', label: 'Learn', blurb: 'The MWMBR tutorial — start here' },
+  { id: 'sli', label: 'SLIs & Queries', blurb: 'Choosing what to measure, and the PromQL to do it' },
+  { id: 'cookbook', label: 'Cookbook', blurb: 'Recommended policies per workload' },
+  { id: 'playground', label: 'Playground', blurb: 'Free-form simulator' },
+  { id: 'report-card', label: 'Report Card', blurb: 'Score your alert policy' },
 ]
 
 export function App() {
+  const [route, navigate] = useHashRoute()
+
   return (
     <div className="container">
       <header className="site-header">
@@ -29,25 +26,27 @@ export function App() {
           <a href="https://sre.google/workbook/alerting-on-slos/" target="_blank" rel="noreferrer">
             Chapter 5 of the Google SRE Workbook
           </a>
-          . Every chart below is a live simulation — drag the sliders and watch the alerts react.
+          . Every chart is a live simulation — drag the sliders and watch the alerts react.
         </p>
-        <nav className="toc" aria-label="Sections">
-          {TOC.map((t) => (
-            <a key={t.id} href={`#${t.id}`}>
+        <nav className="tab-nav" aria-label="Pages">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              className={`tab ${route === t.id ? 'active' : ''}`}
+              title={t.blurb}
+              onClick={() => navigate(t.id)}
+            >
               {t.label}
-            </a>
+            </button>
           ))}
         </nav>
       </header>
       <main>
-        <Intro />
-        <NaiveAlerting />
-        <BurnRates />
-        <SingleWindow />
-        <MultiWindow />
-        <MultiBurnRate />
-        <Limitations />
-        <Playground />
+        {route === 'learn' && <LearnPage />}
+        {route === 'sli' && <SliPage />}
+        {route === 'cookbook' && <CookbookPage />}
+        {route === 'playground' && <Playground />}
+        {route === 'report-card' && <ReportCardPage />}
       </main>
       <footer className="site-footer">
         Built as a learning companion to{' '}
